@@ -729,10 +729,19 @@ int main(int argc, char *argv[]) {
 				if (keys[SDLK_RIGHT] == SDL_PRESSED) {KeyTable[key_w] = 1; }
 				if ((keys[SDLK_LCTRL] == SDL_PRESSED) || (keys[SDLK_LALT] == SDL_PRESSED)) { KeyTable[key_z] = 1; }
 
+				#ifdef MIYOO_MODE
+				if (keys[SDLK_LSHIFT] == SDL_PRESSED) { KeyTable[key_esc] = 1; }
+				if (keys[SDLK_SPACE] == SDL_PRESSED) { KeyTable[key_f4] = 1; }
+				#else
 				if (keys[SDLK_SPACE] == SDL_PRESSED) { KeyTable[key_esc] = 1; }
 				if (keys[SDLK_LSHIFT] == SDL_PRESSED) { KeyTable[key_f4] = 1; }
+				#endif
 
+				#ifdef MIYOO_MODE
+				if (keys[SDLK_BACKSPACE] == SDL_PRESSED || keys[SDLK_SPACE] == SDL_PRESSED) { KeyTable[key_a] = 1; }
+				#else
 				if (keys[SDLK_BACKSPACE] == SDL_PRESSED) { KeyTable[key_a] = 1; }
+				#endif
 				if (keys[SDLK_TAB] == SDL_PRESSED) { KeyTable[key_f2] = 1; }
 
 				if ((keys[SDLK_ESCAPE] == SDL_PRESSED) && (keys[SDLK_RETURN] == SDL_PRESSED)) { 

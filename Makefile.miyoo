@@ -1,0 +1,47 @@
+
+PRGNAME     = manicminer
+
+
+TOOLCHAIN = /opt/miyoo/usr
+EXESUFFIX = .dge
+CC = $(TOOLCHAIN)/bin/arm-linux-gcc
+CCP = $(TOOLCHAIN)/bin/arm-linux-g++
+LD = $(TOOLCHAIN)/bin/arm-linux-g++
+
+# add SDL dependencies
+SDL_LIB     = $(TOOLCHAIN)/lib
+SDL_INCLUDE = $(TOOLCHAIN)/include
+
+INCLUDES = -I./modplay
+
+# change compilation / linking flag options
+CC_OPTS		= -O2 -D_OPENDINGUX_ -DMIYOO_MODE $(F_OPTS)
+CFLAGS      = -I$(SDL_INCLUDE) $(INCLUDES) $(CC_OPTS)
+CXXFLAGS	= -fno-exceptions -fno-rtti $(CFLAGS) 
+LDFLAGS     = -L$(SDL_LIB) $(CC_OPTS) -lSDL 
+
+# Files to be compiled
+SRCDIR   = . ./opendingux
+VPATH    = $(SRCDIR)
+SRC_C    = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+SRC_CP   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.cpp))
+OBJ_C    = $(notdir $(patsubst %.c, %.o, $(SRC_C)))
+OBJ_CP   = $(notdir $(patsubst %.cpp, %.o, $(SRC_CP)))
+OBJS     = $(OBJ_C) $(OBJ_CP)
+
+# Rules to make executable
+$(PRGNAME)$(EXESUFFIX): $(OBJS)  modplay/libmodplay.a
+ifeq "$(OSTYPE)" "msys"	
+	$(LD) $(CFLAGS) -o $(PRGNAME)$(EXESUFFIX) $^ $(LDFLAGS)
+else
+	$(LD) $(LDFLAGS) -o $(PRGNAME)$(EXESUFFIX) $^
+endif
+
+$(OBJ_C) : %.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_CP) : %.o : %.cpp
+	$(CCP) $(CXXFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(PRGNAME)$(EXESUFFIX) *.o

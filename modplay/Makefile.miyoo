@@ -1,0 +1,32 @@
+
+CFLAGS=-std=c99 -O2 -Os -W -Wall -Wno-long-long -ansi -pedantic
+CFLAGS+=-Wno-unused-parameter
+
+TOOLCHAIN = /opt/miyoo/usr
+EXESUFFIX = .dge
+CC = $(TOOLCHAIN)/bin/arm-linux-gcc
+CCP = $(TOOLCHAIN)/bin/arm-linux-g++
+LD = $(TOOLCHAIN)/bin/arm-linux-g++
+
+
+F_OPTS 		= -fomit-frame-pointer -ffunction-sections -ffast-math -fsingle-precision-constant 
+CC_OPTS		= -O2 -mtune=arm926ej-s -D_OPENDINGUX_ $(F_OPTS)
+CFLAGS+=$(CC_OPTS)
+
+LIBS=
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Files to be compiled
+CFILES = $(wildcard *.c)
+OFILES = $(CFILES:%.c=%.o)
+
+all: libmodplay.a
+
+# Rules to make library
+libmodplay.a: $(OFILES)
+	$(AR) -r $@ $^
+
+clean:
+	rm -f libmodplay.a $(OFILES)

@@ -317,7 +317,11 @@ void screen_waitkeyarelease(void) {
 	while (1) {
 		SDL_PollEvent(&event);
 		keys = SDL_GetKeyState(NULL);
+		#ifdef MIYOO_MODE
+		if (keys[SDLK_LALT] != SDL_PRESSED) break;
+		#else
 		if (keys[SDLK_LCTRL] != SDL_PRESSED) break;
+		#endif
 	}
 }
 
@@ -342,7 +346,11 @@ void screen_showmainmenu(MENU *menu) {
 		mi = menu->m + menu->itemCur; // pointer to highlit menu option
 
 		// A - apply parameter or enter submenu
+		#ifdef MIYOO_MODE
+		if (keys[SDLK_LALT] == SDL_PRESSED) { 
+		#else
 		if (keys[SDLK_LCTRL] == SDL_PRESSED) { 
+		#endif
 			if (!keya) {
 				keya = 1; 
 				screen_waitkeyarelease();
@@ -352,7 +360,11 @@ void screen_showmainmenu(MENU *menu) {
 		else keya=0;
 
 		// B - exit or back to previous menu
+		#ifdef MIYOO_MODE
+		if (keys[SDLK_LCTRL] == SDL_PRESSED) { 
+		#else
 		if (keys[SDLK_LALT] == SDL_PRESSED) { 
+		#endif
 			if (!keyb) {
 				keyb = 1; if (menu != &mnuMainMenu) gameMenu = false;
 			}

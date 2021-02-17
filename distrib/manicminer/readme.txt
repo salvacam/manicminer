@@ -20,9 +20,10 @@ SELECT          : Options (F1 key)
 A/B             : Jump
 X               : Quit (ESC key, except during intro)
 Y               : Change music in option menu (F4 key)
-R               : Pause (A key)
+R o Y           : Pause (A key)
 L               : Change levels in option menu (F3 key)
 LEFT & RIGHT    : Move Willy ... left & right :) 
+SELECT & START  : Open menu in game
 
 Warning, high score saved only when you quit game.
 
